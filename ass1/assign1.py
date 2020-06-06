@@ -1,16 +1,15 @@
 import cv2
 import numpy as np
 
-Cells = 'Cells.png'
-Particles = 'Particles.png'
-
-Cells_img = cv2.imread(Cells,-1)
-Particles_img = cv2.imread(Particles,-1)
-
-
+print('Enter the path of image: ')
+Image_path = str(input())
+Image = cv2.imread(Image_path,-1)
+I = Image.shape
+height = I[0]
+width = I[1]
 print('Pless enter the value of N: ')
 N = int(input())
-I = Particles_img.shape
+I = Image.shape
 
 height = I[0]
 width = I[1]
@@ -30,5 +29,5 @@ if __name__ == '__main__':
     for i in range(height):
         for j in range(width):
             A[i][j] = i+j
-    cv2.imwrite('A.jpg',A)
+    c
 
