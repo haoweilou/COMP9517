@@ -9,7 +9,7 @@ Particles = 'Particles.png'
 
 # Load image path and find the height and width of the image
 Image_path = Particles
-Image = cv2.imread(Image_path,-1)
+Image = cv2.imread(Image_path,0)
 I = Image.shape
 height = I[0]
 width = I[1]
@@ -34,6 +34,7 @@ def maxfilter(row,col):
         for j in range(0,N):
             output = max(Image[start[0]+i][start[1]+j],output)
     return output
+
 # Function that find the minimum value in neighbours
 def minfilter(A,row,col):
     start = [row-N//2,col-N//2]
@@ -51,20 +52,20 @@ def minfilter(A,row,col):
             output = min(A[start[0]+i][start[1]+j],output)
     return output
 
-A = np.zeros(I,dtype=np.uint8)
+A = np.zeros(I,dtype=np.int)
 for i in range(height):
     for j in range(width):
         A[i][j] = maxfilter(i,j)
 
-B = np.zeros(I,dtype=np.uint8)
+B = np.zeros(I,dtype=np.int)
 for i in range(height):
     for j in range(width):
         B[i][j] = minfilter(A,i,j)
 
-O = np.zeros(I,dtype=np.uint8)
+O = np.zeros(I,dtype=np.int)
 for i in range(height):
     for j in range(width):
-        O[i][j] = Image[i][j] -B[i][j]
+        O[i][j] = Image[i][j] - B[i][j] + 255
 
 
 cv2.imwrite("A.png",A)
