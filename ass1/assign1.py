@@ -27,7 +27,6 @@ def maxfilter(image,row,col):
         start[0] = height - N
     if start[1]  > width - N:
         start[1] = width - N
-
     return np.max(image[start[0]:start[0]+N,start[1]:start[1]+N])
 
 # Function that find the minimum value in neighbours
