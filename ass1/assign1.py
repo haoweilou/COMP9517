@@ -19,7 +19,7 @@ print('Pless enter the value of N: ',end='')
 N = int(input())
 
 # Function that find the maximum value in neighbours
-def maxfilter(row,col):
+def maxfilter(image,row,col):
     start = [row-N//2,col-N//2]
 
     start[0] = max(0,start[0])
@@ -32,11 +32,11 @@ def maxfilter(row,col):
     output = 0
     for i in range(0,N):
         for j in range(0,N):
-            output = max(Image[start[0]+i][start[1]+j],output)
+            output = max(image[start[0]+i][start[1]+j],output)
     return output
 
 # Function that find the minimum value in neighbours
-def minfilter(A,row,col):
+def minfilter(image,row,col):
     start = [row-N//2,col-N//2]
 
     start[0] = max(0,start[0])
@@ -49,23 +49,37 @@ def minfilter(A,row,col):
     output = 255
     for i in range(0,N):
         for j in range(0,N):
-            output = min(A[start[0]+i][start[1]+j],output)
+            output = min(image[start[0]+i][start[1]+j],output)
     return output
 
+print("Enter m value: ",end='')
+M = int(input())
+
 A = np.zeros(I,dtype=np.int)
-for i in range(height):
-    for j in range(width):
-        A[i][j] = maxfilter(i,j)
-
 B = np.zeros(I,dtype=np.int)
-for i in range(height):
-    for j in range(width):
-        B[i][j] = minfilter(A,i,j)
-
 O = np.zeros(I,dtype=np.int)
-for i in range(height):
-    for j in range(width):
-        O[i][j] = Image[i][j] - B[i][j] + 255
+if M == 0:
+    for i in range(height):
+        for j in range(width):
+            A[i][j] = maxfilter(Image,i,j)
+    for i in range(height):
+        for j in range(width):
+            B[i][j] = minfilter(A,i,j)
+    for i in range(height):
+        for j in range(width):
+            O[i][j] = (Image[i][j] - B[i][j])%256
+elif M == 1:
+    for i in range(height):
+        for j in range(width):
+            A[i][j] = minfilter(Image,i,j)
+    for i in range(height):
+        for j in range(width):
+            B[i][j] = maxfilter(A,i,j)
+    for i in range(height):
+        for j in range(width):
+            O[i][j] = Image[i][j] - B[i][j]
+
+
 
 
 cv2.imwrite("A.png",A)
