@@ -8,7 +8,7 @@ Cells = 'Cells.png'
 Particles = 'Particles.png'
 
 # Load image path and find the height and width of the image
-Image_path = Particles
+Image_path = Cells
 Image = cv2.imread(Image_path,0)
 I = Image.shape
 height = I[0]
@@ -21,43 +21,35 @@ N = int(input())
 # Function that find the maximum value in neighbours
 def maxfilter(image,row,col):
     start = [row-N//2,col-N//2]
-
     start[0] = max(0,start[0])
     start[1] = max(0,start[1])
     if start[0] > height - N:
         start[0] = height - N
     if start[1]  > width - N:
         start[1] = width - N
-    
-    output = 0
-    for i in range(0,N):
-        for j in range(0,N):
-            output = max(image[start[0]+i][start[1]+j],output)
-    return output
+
+    return np.max(image[start[0]:start[0]+N,start[1]:start[1]+N])
 
 # Function that find the minimum value in neighbours
 def minfilter(image,row,col):
     start = [row-N//2,col-N//2]
-
     start[0] = max(0,start[0])
     start[1] = max(0,start[1])
     if start[0] > height - N:
         start[0] = height - N
     if start[1]  > width - N:
         start[1] = width - N
-    
-    output = 255
-    for i in range(0,N):
-        for j in range(0,N):
-            output = min(image[start[0]+i][start[1]+j],output)
-    return output
 
-print("Enter m value: ",end='')
+    return np.min(image[start[0]:start[0]+N,start[1]:start[1]+N])
+
+#Ask user to enter M value
+print('Pless enter the value of M: ',end='')
 M = int(input())
 
-A = np.zeros(I,dtype=np.int)
-B = np.zeros(I,dtype=np.int)
-O = np.zeros(I,dtype=np.int)
+#Initialise image
+A = np.zeros(I,dtype=np.int16)
+B = np.zeros(I,dtype=np.int16)
+O = np.zeros(I,dtype=np.int16)
 if M == 0:
     for i in range(height):
         for j in range(width):
@@ -65,9 +57,9 @@ if M == 0:
     for i in range(height):
         for j in range(width):
             B[i][j] = minfilter(A,i,j)
-    for i in range(height):
-        for j in range(width):
-            O[i][j] = (Image[i][j] - B[i][j])%256
+    matrix_255 = np.empty(I)
+    matrix_255.fill(255)
+    O = Image - B + matrix_255
 elif M == 1:
     for i in range(height):
         for j in range(width):
@@ -75,13 +67,9 @@ elif M == 1:
     for i in range(height):
         for j in range(width):
             B[i][j] = maxfilter(A,i,j)
-    for i in range(height):
-        for j in range(width):
-            O[i][j] = Image[i][j] - B[i][j]
+    O = Image - B
 
-
-
-
+#Output image
 cv2.imwrite("A.png",A)
 cv2.imwrite("B.png",B)
 cv2.imwrite("O.png",O)
