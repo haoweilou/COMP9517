@@ -1,0 +1,1 @@
+In order to make the number of point in new image is around 10% of the default parameter. I first get the total point SIFT function found in previous part. Then I divided the number I got by 10, and set nfeatures to be n//10. Thus, the new keypoints is approximately equal to 10% of the default method

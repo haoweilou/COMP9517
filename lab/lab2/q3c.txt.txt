@@ -1,0 +1,1 @@
+Refer to the image in above, the keypoints of the rotated image is roughly the same as those of the original image. It shows that the keyponits before/after rotation is similar. Hence, this obeservation implies that rotations does not effect the feature SIFT will get.
